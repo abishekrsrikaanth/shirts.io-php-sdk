@@ -1,0 +1,22 @@
+{
+    "name": "abishekrsrikaanth/shirts.io-php-sdk",
+    "description": "PHP SDK to integrate with Shirts.io API",
+    "minimum-stability": "stable",
+    "license": "BSD-3-Clause",
+    "keywords": ["shirts", "shirts-io", "shirts.io"],
+    "authors": [
+        {
+            "name": "Abishek R Srikaanth",
+            "email": "abishek@technicaliti.me"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "guzzle/guzzle": "3.8.*@dev"
+    },
+    "autoload": {
+        "psr-0": {
+            "ShirtsIO": "src/"
+        }
+    }
+}
