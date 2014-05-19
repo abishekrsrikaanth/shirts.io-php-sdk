@@ -9,7 +9,7 @@ use Guzzle\Http\Exception\BadResponseException;
 
 class Request
 {
-    private $_api_url = 'https://www.shirts.io/api/';
+    private $_api_url = 'https://www.shirts.io/api';
     protected $_api_key = '';
     private $_api_version = 'v1';
     protected $_guzzle_plugins = array();
@@ -32,7 +32,6 @@ class Request
     {
 
         $data['api_key'] = $this->_api_key;
-        $headers         = array('content-type' => 'application/json');
 
 
         switch (strtoupper($request_type)) {
