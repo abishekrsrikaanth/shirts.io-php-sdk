@@ -36,19 +36,42 @@ class Request
 
         switch (strtoupper($request_type)) {
             case "GET":
-                $request = $this->_client->get($this->_api_url . '/' . $this->_api_version . '/' . $url, $headers, array('query' => $data));
+                $request = $this->_client->get($this->_api_url . '/' . $this->_api_version . '/' . $url, null, array('query' => $data));
                 break;
             case "POST":
-                $request = $this->_client->post($this->_api_url . '/' . $this->_api_version . '/' . $url, $headers, $data);
+                $request = $this->_client->post($this->_api_url . '/' . $this->_api_version . '/' . $url, null, $data);
                 break;
         }
 
         try {
             $response = $request->send()->json();
         } catch (BadResponseException $exception) {
-            $response = $exception->getResponse()->json();
+            $statusCode = $exception->getResponse()->getStatusCode();
+
+            switch ($statusCode) {
+                case "400":
+                    throw new \HttpRequestException("Parameters invalid");
+                case "401":
+                    throw new \HttpRequestException("API key was invalid or deactivated");
+                case "402":
+                    throw new \HttpRequestException("Request failed on server end.");
+                default:
+                    throw new \Exception('Invalid Request Exception');
+
+            }
         } catch (GuzzleException $exception) {
-            throw $exception;
+            $statusCode = $exception->getResponse()->getStatusCode();
+
+            switch ($statusCode) {
+                case "400":
+                    throw new \HttpRequestException("Parameters invalid");
+                case "401":
+                    throw new \HttpRequestException("API key was invalid or deactivated");
+                case "402":
+                    throw new \HttpRequestException("Request failed on server end.");
+                default:
+                    throw new \Exception('Invalid Request Exception');
+            }
         }
 
         return $response;
